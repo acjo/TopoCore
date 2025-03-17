@@ -28,6 +28,10 @@ std::vector<Simplex> build_simplices_csv(std::string &fileName) {
   char delimiter = ',';
   while (std::getline(inputFile, line)) {
     std::vector<std::string> tokens = split(line, delimiter);
+    std::cout << tokens.size() << std::endl;
+    for (int i = 0; ++i, i < tokens.size();) {
+      std::cout << tokens.at(i) << std::endl;
+    }
     Simplex simplex = Simplex(tokens);
     simplicies.push_back(simplex);
   }
@@ -36,6 +40,7 @@ std::vector<Simplex> build_simplices_csv(std::string &fileName) {
 
 std::vector<std::string> split(std::string &line, char delimiter) {
 
+  // Fix split function, is incorrect.
   std::istringstream iss(line);
   std::vector<std::string> tokens;
 
