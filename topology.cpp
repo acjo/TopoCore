@@ -1,41 +1,23 @@
 #include "Simplex.h"
-#include <fstream>
+#include "SimplicialComplex.h"
+#include "utils.h"
 #include <iostream>
 #include <string>
 #include <vector>
 
-std::vector<std::string> parse_csv(std::string &fileName) {
+int main(int argn, char **argv) {
 
-  std::fstream inputFile(fileName);
-
-  if (!inputFile.is_open()) {
-    std::cout << "Error opening file!" << std::endl;
-    std::vector<std::string> error_vector(1, "Error");
-    return error_vector;
+  std::string fileName;
+  if (argn == 2) {
+    fileName = static_cast<std::string>(argv[1]);
+  } else {
+    fileName = "examples/complex_a.csv";
   }
 
-  std::string line;
-  while (std::getline(inputFile, line)) {
-    std::cout << line << std::endl;
-  }
+  std::cout << "Reading File: " << fileName << std::endl;
+  std::vector<Simplex> simplicies = build_simplices_csv(fileName);
 
-  std::vector<std::string> normal_execution(1, "Complete");
-  return normal_execution;
-}
-
-int main(int argn, char *argv[]) {
-
-  // if (argn == 2) {
-  //   const std::string fileName = argv[1];
-  // } else {
-  //   const std::string fileName = "SimplicialComplex.txt";
-  // }
-
-  // inFile = std::fopen(fileName, 'r');
-  //
-
-  std::string fileName = "examples/complex_a.csv";
-  std::vector<std::string> output = parse_csv(fileName);
+  SimplicialComplex complex = SimplicialComplex(simplicies);
 
   return 0;
 };

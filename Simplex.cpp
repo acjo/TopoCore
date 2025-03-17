@@ -1,9 +1,14 @@
 #include "Simplex.h"
+#include <vector>
 
 Simplex::Simplex() {}
-Simplex::Simplex(const std::string &val) {
-  // Constructor with value;
+Simplex::Simplex(const std::vector<std::string> &val) {
   value = val;
+  type = value.size();
 }
-std::string Simplex::get_val() { return value; }
-void Simplex::set_val(const std::string &val) { value = val; }
+std::vector<std::string> Simplex::get_val() { return value; }
+int Simplex::get_type() { return type; }
+void Simplex::set_val(const std::vector<std::string> &val) {
+  value = val;
+  type = value.size();
+}
