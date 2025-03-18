@@ -1,13 +1,14 @@
 #pragma once
 
 #include "Simplex.h"
+#include <map>
 #include <vector>
 class SimplicialComplex {
 private:
+  std::vector<Simplex> vertices;
   std::vector<Simplex> simplicies;
 
 public:
-  SimplicialComplex();
   SimplicialComplex(std::vector<Simplex> &simplicies);
   void add_simplicies(std::vector<Simplex> &simplicies);
   // std::vector<Simplex> boundary_p_chain_mod_2(int dim);

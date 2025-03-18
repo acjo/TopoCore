@@ -6,10 +6,12 @@
 #include <string>
 #include <vector>
 
-// split strings by a delimiter
-std::vector<std::string> split(std::string &line, std::string delimiter);
-// parse csv.
+// build simplices from CSV
 std::vector<Simplex> build_simplices_csv(std::string &fileName);
+// split strings by a delimiter
+std::vector<std::string> split(std::string &line, char delimiter);
+// removes new line and empty spaces from a string
+std::string strip(std::string &line);
 bool is_vertex(int length_token);
 bool is_line(int length_token);
 bool is_triangle(int length_token);
@@ -25,11 +27,15 @@ std::vector<Simplex> build_simplices_csv(std::string &fileName) {
 
   std::vector<Simplex> simplicies;
   std::string line;
-  std::string delimiter = ",";
+  char delimiter = ',';
   while (std::getline(inputFile, line)) {
     std::vector<std::string> tokens = split(line, delimiter);
+    for (int i = 0; i < tokens.size(); ++i) {
+      tokens.at(i) = strip(tokens.at(i));
+    }
     std::cout << "line: " << line << std::endl;
     std::cout << "Tokens Size: " << tokens.size() << std::endl;
+    std::cout << "All Tokens:" << std::endl;
     for (int i = 0; i < tokens.size(); ++i) {
       std::cout << tokens.at(i) << std::endl;
     }
@@ -39,9 +45,26 @@ std::vector<Simplex> build_simplices_csv(std::string &fileName) {
   return simplicies;
 }
 
-std::vector<std::string> split(std::string &line, std::string delimiter) {
+std::string strip(std::string &s) {
 
-  // TODO: remove space from string
+  std::string copy = "";
+  while (s.size() > 0) {
+    int l = s.size() - 1;
+    if (s.at(l) == ' ' || s.at(l) == '\n') {
+      s.pop_back();
+      continue;
+    }
+    copy += s.at(l);
+    s.pop_back();
+  }
+  std::string reverse = "";
+  for (int i = copy.size() - 1; i >= 0; --i) {
+    reverse += copy.at(i);
+  }
+  return reverse;
+}
+
+std::vector<std::string> split(std::string &line, char delimiter) {
 
   std::vector<std::string> tokens;
   std::string current_line;
@@ -51,25 +74,14 @@ std::vector<std::string> split(std::string &line, std::string delimiter) {
     return tokens;
   }
 
-  std::string pre = "";
-  std::string suff = "";
-  for (int i = 0; i < line.size(); i++) {
-    if (i < idx) {
-      pre += line[i];
-    } else if (i == idx) {
-      continue;
-    } else {
-      suff += line[i];
-    }
-  }
-  tokens.push_back(pre);
-
-  std::vector<std::string> suff_tokens = split(suff, delimiter);
-  for (int i = 0; i < suff_tokens.size(); i++) {
-    if (suff_tokens.at(i) == "") {
+  std::string new_token = "";
+  for (int i = 0; i < line.size(); ++i) {
+    if (line.at(i) == delimiter) {
+      tokens.push_back(new_token);
+      new_token.clear();
       continue;
     }
-    tokens.push_back(suff_tokens.at(i));
+    new_token += line.at(i);
   }
 
   return tokens;
