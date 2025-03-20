@@ -11,7 +11,7 @@ std::vector<Simplex> build_simplices_csv(std::string &fileName);
 // split strings by a delimiter
 std::vector<std::string> split(std::string &line, char delimiter);
 // removes new line and empty spaces from a string
-std::string strip(std::string &line);
+std::string strip(const std::string &line);
 bool is_vertex(int length_token);
 bool is_line(int length_token);
 bool is_triangle(int length_token);
@@ -45,23 +45,18 @@ std::vector<Simplex> build_simplices_csv(std::string &fileName) {
   return simplicies;
 }
 
-std::string strip(std::string &s) {
+std::string strip(const std::string &str) {
+  std::string result = str;
 
-  std::string copy = "";
-  while (s.size() > 0) {
-    int l = s.size() - 1;
-    if (s.at(l) == ' ' || s.at(l) == '\n') {
-      s.pop_back();
-      continue;
-    }
-    copy += s.at(l);
-    s.pop_back();
-  }
-  std::string reverse = "";
-  for (int i = copy.size() - 1; i >= 0; --i) {
-    reverse += copy.at(i);
-  }
-  return reverse;
+  // Remove spaces and newlines from the beginning
+  result.erase(0, result.find_first_not_of(" \n\r\t"));
+
+  // Remove spaces and newlines from the end
+  size_t last = result.find_last_not_of(" \n\r\t");
+  if (last != std::string::npos)
+    result.erase(last + 1);
+
+  return result;
 }
 
 std::vector<std::string> split(std::string &line, char delimiter) {

@@ -17,7 +17,7 @@ int main(int argn, char **argv) {
   std::cout << "Reading File: " << fileName << std::endl;
   std::vector<Simplex> simplicies = build_simplices_csv(fileName);
 
-  SimplicialComplex complex = SimplicialComplex(simplicies);
+  // SimplicialComplex complex = SimplicialComplex(simplicies);
 
   return 0;
 };
